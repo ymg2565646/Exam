@@ -7,9 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.Subject;
-
 import bean.School;
+import bean.Subject;
 
 public class SubjectDao extends Dao {
 	//科目の一件検索メソッド
@@ -122,7 +121,7 @@ public class SubjectDao extends Dao {
 
 		try {
 			// データベースから科目を取得
-			Subject old = get(subject.getCd());
+			Subject old = get(subject.getCd(),subject.getSchool());
 			if (old == null) {
 				// 科目が存在しなかった場合
 				// プリペアードステートメントにINSERT文をセット
@@ -130,7 +129,7 @@ public class SubjectDao extends Dao {
 				// プリペアードステートメントに値をバインド
 				statement.setString(1, subject.getCd());
 				statement.setString(2, subject.getName());
-				statement.setInt(3, subject.getSchool_cd());
+				statement.setString(3, subject.getSchool().getCd());
 			} else {
 				// 科目が存在した場合
 				// プリペアードステートメントにUPDATE文をセット
@@ -184,7 +183,7 @@ public class SubjectDao extends Dao {
 	        );
 
 	        statement.setString(1, subject.getCd());
-	        statement.setInt(2, subject.getSchool_cd());
+	        statement.setString(2, subject.getSchool().getCd());
 	        
 	        count = statement.executeUpdate();
 
